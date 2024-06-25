@@ -6,9 +6,9 @@ def analyze_with_jina(url):
     api_url = f"https://r.jina.ai/{url}"
     response = requests.get(api_url)
     if response.status_code == 200:
-        return response.json()
+        return response.text  # Return raw text from the response
     else:
-        st.error(f"Jina Error: {response.status_code}")
+        st.error(f"Jina Error: HTTP {response.status_code}")
         return None
 
 # Streamlit app
@@ -22,8 +22,8 @@ if st.button("Analyze URL"):
         # Analyze URL with Jina
         result = analyze_with_jina(url)
         if result:
-            # Display results as JSON
+            # Display results as plain text
             st.write("Analysis Results:")
-            st.json(result)
+            st.text(result)  # Display as plain text
     else:
         st.error("Please provide the URL.")
